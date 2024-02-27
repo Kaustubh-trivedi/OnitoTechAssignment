@@ -2,8 +2,10 @@ import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
+import Stepper from 'react-stepper-horizontal';
 const PersonalDetailsForm = () => {
     let [disable, setDisable] = useState(true);
+    let [adharValiation, setAdharValidation] = useState(false);
 
     const navigate = useNavigate();
     let initialValues = {
@@ -19,15 +21,13 @@ const PersonalDetailsForm = () => {
         initialValues: initialValues,
         validationSchema: Yup.object({
             name: Yup.string().required("Name is required").min(3, 'Name must be at least 3 characters'),
-            age: Yup.string().required("This field is required").matches(/^(0?[1-9]|[1-9][0-9]+)$/, "Enter a valid age"),
-            sex: Yup.string().required("This field is required"),
-            mobile: Yup.string().required("This field is required").matches(/^[6-9]\d{9}$/, "Enter a valid mobile number"),
-            govt_id_type: Yup.string().required("This field is required"),
-            govt_id: Yup.string().required("This field is required"),
-
+            age: Yup.string().required("Age is required").matches(/^(0?[1-9]|[1-9][0-9]+)$/, "Enter a valid age"),
+            sex: Yup.string().required("Select one value"),
+            mobile: Yup.string().matches(/^[6-9]\d{9}$/, "Enter a valid mobile number"),
+            govt_id_type: Yup.string(),
+            govt_id: adharValiation?Yup.string().matches(/^[2-9]\d{11}$/,"Enter a valid 12 digit Adhar number"):Yup.string(),
         }),
         onSubmit: values => {
-            console.log(values);
             navigate("/address-details", { state: { values } })
         }
     });
@@ -35,22 +35,31 @@ const PersonalDetailsForm = () => {
     const handleGovtId = (e) => {
         if (e.target.value === "Aadhar") {
             setDisable(false);
+            setAdharValidation(true);
         } else if (e.target.value === "Pan") {
             setDisable(false);
+            setAdharValidation(false);
         } else {
-            formik.setFieldValue("govt_id","")
+            formik.setFieldValue("govt_id", "")
             setDisable(true);
+            setAdharValidation(false);
         }
     }
 
     return (
         <>
             <div className="container my-1">
+                <div className="row my-2">
+                    <div className="text-center">
+                        <h4>Onito Tech Assignment</h4>
+                    </div>
+                </div>
+                <Stepper steps={[{ title: 'Personal Details' }, { title: 'Address Details' }]} activeStep={1} />
                 <div className="row">
                     <h3><i>Perosnal Details</i></h3>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
-                    <div className="row">
+                    <div className="row my-1">
                         <div className="col-md-6">
                             <label htmlFor="name"><b>Name:</b></label>
                             <input type="text" className="form-control" name='name' placeholder='Enter your name'
@@ -77,7 +86,7 @@ const PersonalDetailsForm = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row my-1">
                         <div className="col-md-6">
                             <label htmlFor="sex"><b>Sex:</b></label>
                             <select name="sex" id="sex" className='form-control'
@@ -105,9 +114,9 @@ const PersonalDetailsForm = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row my-1">
                         <div className="col-md-6">
-                            <label htmlFor="govt_id_type"><b>Govt Issued ID Type</b></label>
+                            <label htmlFor="govt_id_type"><b>Govt Issued ID Type:</b></label>
                             <select name="govt_id_type" id="govt_id_type" className='form-control'
                                 onChange={
                                     (e) => {
@@ -128,8 +137,9 @@ const PersonalDetailsForm = () => {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            {/* <label htmlFor="govt_id"></label> */}
-                            <input type="text" className='form-control' name="govt_id"
+                            <label htmlFor="govt_id"><b>ID Number:</b></label>
+                            <input type="text" className='form-control' name="govt_id" id="govt_id"
+                            maxLength={12}
                                 disabled={disable}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
@@ -141,8 +151,12 @@ const PersonalDetailsForm = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="row my-1">
+                        <div className="col-md-6">
 
-                    <button type='submit' className="btn btn-primary btn-sm">Next</button>
+                            <button type='submit' className="btn btn-dark btn-sm">Next</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </>

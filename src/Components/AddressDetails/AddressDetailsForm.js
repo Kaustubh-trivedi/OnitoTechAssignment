@@ -1,17 +1,22 @@
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 import * as Yup from "yup";
 import axios from "axios";
 import { useDispatch } from 'react-redux';
 import { setWholeDetails } from '../../Redux/action/ApplicationAction';
+import { toast } from 'react-toastify';
+import Stepper from 'react-stepper-horizontal';
+
 const AddressDetailsForm = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const location = useLocation();
+  const { values } = location.state || "";
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -20,16 +25,19 @@ const AddressDetailsForm = () => {
         setFilteredCountries(response.data);
       } catch (error) {
         console.error('Error fetching countries:', error);
+        toast.error("Error in fetching countries.")
       }
     };
-
+    if (!values) {
+      toast.error("Please fill personal details first.");
+      navigate("/personal-details");
+    }
     fetchCountries();
   }, []);
 
 
 
-  const location = useLocation();
-  const { values } = location.state || "";
+
   // console.log(values)
   let initialValues = {
     name: values.name || "",
@@ -59,23 +67,12 @@ const AddressDetailsForm = () => {
 
     }),
     onSubmit: (values) => {
-      console.log(values);
       dispatch(setWholeDetails(values));
+      navigate("/")
     }
   });
 
   const handleInputChange = event => {
-    // const inputValue = event.target.value.toLowerCase();
-    // if (inputValue === '') {
-    //   setCountries(countries);
-    // } else {
-    //   const filtered = countries.filter(country =>
-    //     country.name.common.toLowerCase().includes(inputValue)
-    //   );
-    //   setCountries(filtered);
-    // }
-    // formik.handleChange(event);
-
     const inputValue = event.target.value.toLowerCase();
     formik.handleChange(event);
 
@@ -92,6 +89,12 @@ const AddressDetailsForm = () => {
   return (
     <>
       <div className="container my-1">
+        <div className="row my-2">
+          <div className="text-center">
+            <h4>Onito Tech Assignment</h4>
+          </div>
+        </div>
+        <Stepper steps={[{ title: 'Personal Details' }, { title: 'Address Details' }]} activeStep={2} />
         <div className="row">
           <h3><i>Address Details</i></h3>
         </div>
@@ -163,7 +166,7 @@ const AddressDetailsForm = () => {
               </div>
             </div>
           </div>
-          <button type='submit' className="btn btn-primary btn-sm">Next</button>
+          <button type='submit' className="btn btn-dark btn-sm">Next</button>
         </form>
       </div>
     </>

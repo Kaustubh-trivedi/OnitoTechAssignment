@@ -27,7 +27,6 @@ const setSeekerAllData = (seekerData) => {
 }
 
 export const setWholeDetails = (data) => {
-    console.log("data in redux", data);
     return function (dispatch) {
         dispatch(setDataRedux(data));
     }
