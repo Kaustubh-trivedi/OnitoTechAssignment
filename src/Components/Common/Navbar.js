@@ -30,7 +30,7 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link className={`nav-link ${(path === "/personal-details" || path=="/address-details") && "active"}`} to="/personal-details">
+                                <Link className={`nav-link ${(path === "/personal-details" || path==="/address-details") && "active"}`} to="/personal-details">
                                     Add Details
                                 </Link>
                             </li>

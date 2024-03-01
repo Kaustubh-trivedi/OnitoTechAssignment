@@ -1,30 +1,3 @@
-import axios from "axios";
-
-let host = "https://localhost:4600";
-
-
-export const getSeekerAllData = (token) => {
-    return async function (dispatch) {
-        await fetch(`${host}/mobile/get-seeker-all-details`, { method: "GET", headers: { "auth-token": token } })
-            .then((res) => {
-                res.json().then((seekerData) => {
-                    dispatch(setSeekerAllData(seekerData?.data?.[0]));
-                    // console.log("In seeker data in action:", seekerData?.data[0]);
-                })
-            }).catch((err) => {
-                console.log("ERROR in getSeekerData function(redux):", err.message, err);
-            })
-    }
-}
-
-const setSeekerAllData = (seekerData) => {
-    if (seekerData) {
-        return {
-            type: "SET_SEEKER_ALL_DATA",
-            payload: seekerData,
-        }
-    }
-}
 
 export const setWholeDetails = (data) => {
     return function (dispatch) {

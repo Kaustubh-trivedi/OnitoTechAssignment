@@ -25,7 +25,7 @@ const PersonalDetailsForm = () => {
             sex: Yup.string().required("Select one value"),
             mobile: Yup.string().matches(/^[6-9]\d{9}$/, "Enter a valid mobile number"),
             govt_id_type: Yup.string(),
-            govt_id: adharValiation?Yup.string().matches(/^[2-9]\d{11}$/,"Enter a valid 12 digit Adhar number"):Yup.string(),
+            govt_id: adharValiation ? Yup.string().matches(/^[2-9]\d{11}$/, "Enter a valid 12 digit Adhar number") : Yup.string().matches(/^[A-Za-z0-9]{10}$/, "Enter a valid 10 characters long PAN number."),
         }),
         onSubmit: values => {
             navigate("/address-details", { state: { values } })
@@ -139,7 +139,7 @@ const PersonalDetailsForm = () => {
                         <div className="col-md-6">
                             <label htmlFor="govt_id"><b>ID Number:</b></label>
                             <input type="text" className='form-control' name="govt_id" id="govt_id"
-                            maxLength={12}
+                                maxLength={adharValiation?12:10}
                                 disabled={disable}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}

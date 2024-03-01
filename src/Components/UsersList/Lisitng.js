@@ -15,6 +15,9 @@ const Lisitng = ({ data }) => {
         console.log(data)
         setTableData(data);
         $(tableRef.current).DataTable();
+        // return () => {
+        //     $(tableRef.current).DataTable().destroy();
+        //   };
     }, [data])
     return (
         <>
@@ -46,7 +49,6 @@ const Lisitng = ({ data }) => {
                             <th>Pin Code</th>
                         </tr>
                     </thead>
-
                     {tabledata.length > 0 && (
                         <tbody>
                             {tabledata.map((data, index) => {

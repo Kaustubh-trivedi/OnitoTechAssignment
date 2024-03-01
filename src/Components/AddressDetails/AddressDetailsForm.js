@@ -99,7 +99,7 @@ const AddressDetailsForm = () => {
           <h3><i>Address Details</i></h3>
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div className="row">
+          <div className="row my-1">
             <div className="col-md-6">
               <label htmlFor="address"><b>Address:</b></label>
               <input type="text" className="form-control" name='address' placeholder='Enter your address'
@@ -122,7 +122,7 @@ const AddressDetailsForm = () => {
               </div>
             </div>
           </div>
-          <div className="row">
+          <div className="row my-1">
             <div className="col-md-6">
               <label htmlFor="city"><b>City:</b></label>
               <input type="text" className="form-control" name='city' placeholder='Enter City'
@@ -152,7 +152,7 @@ const AddressDetailsForm = () => {
               </datalist>
             </div>
           </div>
-          <div className="row">
+          <div className="row my-1">
             <div className="col-md-6">
               <label htmlFor="pincode"><b>Pincode:</b></label>
               <input type="text" className="form-control" name='pincode' placeholder='Enter Pincode'
@@ -166,7 +166,11 @@ const AddressDetailsForm = () => {
               </div>
             </div>
           </div>
-          <button type='submit' className="btn btn-dark btn-sm">Next</button>
+          <div className="row my-1">
+            <div className="col-md-6">
+              <button type='submit' className="btn btn-dark btn-sm">Next</button>
+            </div>
+          </div>
         </form>
       </div>
     </>
